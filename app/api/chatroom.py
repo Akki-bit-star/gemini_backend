@@ -117,24 +117,8 @@ async def send_message(
     # Increment message count
     RateLimiter.increment_message_count(current_user, db)
 
-    # Process with Gemini API and wait for result
-    task_result = process_gemini_message.delay(
-        message.id, message_data.user_message)
-
-    # Wait for the task to complete (with timeout)
-    try:
-        gemini_response = task_result.get(timeout=30)  # 30 second timeout
-
-        # Refresh the message to get updated data
-        db.refresh(message)
-
-    except Exception as e:
-        print(f"Celery task failed: {e}")
-        message.gemini_response = "Failed to process request"
-        db.commit()
-        db.refresh(message)
     # Process with Gemini API asynchronously
-    # process_gemini_message.delay(message.id, message_data.user_message)
+    process_gemini_message.delay(message.id, message_data.user_message)
 
     # print(f"Message ID: {message.id}, User Message: {message_data.user_message}, Message: {message}")
     return message
