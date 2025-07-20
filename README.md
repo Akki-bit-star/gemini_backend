@@ -37,7 +37,7 @@ A FastAPI-based backend system that replicates Gemini's functionality with user 
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Akki-bit-star/gemini_backend.git
    cd gemini-backend
    ```
 
@@ -60,6 +60,9 @@ A FastAPI-based backend system that replicates Gemini's functionality with user 
    
    # Start the API server
    uvicorn app.main:app --reload
+
+   #start redis server
+   redis-server
    
    # Start Celery worker
    celery -A app.tasks.gemini_tasks worker --loglevel=info --pool=threads
